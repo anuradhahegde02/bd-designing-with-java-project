@@ -1,7 +1,5 @@
 package com.amazon.ata.types;
 
-import com.amazon.ata.exceptions.UnsupprtedOperationException;
-
 import java.math.BigDecimal;
 import java.util.Objects;
 
