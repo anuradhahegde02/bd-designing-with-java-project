@@ -23,6 +23,7 @@ public class MonetaryCostStrategy implements CostStrategy {
     public MonetaryCostStrategy() {
         materialCostPerGram = new HashMap<>();
         materialCostPerGram.put(Material.CORRUGATE, BigDecimal.valueOf(.005));
+        materialCostPerGram.put(Material.LAMINATED_PLASTIC, BigDecimal.valueOf(.25));
     }
 
     @Override
@@ -31,7 +32,7 @@ public class MonetaryCostStrategy implements CostStrategy {
         BigDecimal materialCost = this.materialCostPerGram.get(packaging.getMaterial());
 
         BigDecimal cost = packaging.getMass().multiply(materialCost)
-            .add(LABOR_COST);
+                .add(LABOR_COST);
 
         return new ShipmentCost(shipmentOption, cost);
     }
