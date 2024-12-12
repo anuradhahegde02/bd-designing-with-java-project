@@ -54,6 +54,7 @@ public class Packaging {
     @Override
     public boolean equals(Object o) {
         // Can't be equal to null
+
         if (o == null) {
             return false;
         }

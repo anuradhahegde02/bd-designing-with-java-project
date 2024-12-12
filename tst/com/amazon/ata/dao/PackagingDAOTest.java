@@ -28,6 +28,19 @@ class PackagingDAOTest {
     private PackagingDAO packagingDAO;
 
     @Test
+    public void findShipmentOptions_duplicatePackagingOptionForOneFulfillmentCenter_ignoresDuplicateEntry() throws UnknownFulfillmentCenterException, NoPackagingFitsItemException {
+        // GIVEN
+        packagingDAO = new PackagingDAO(datastore);
+        //When
+        List<ShipmentOption> shipmentOptions = packagingDAO.findShipmentOptions(smallItem, iad2);
+
+        // THEN
+        assertEquals(3, shipmentOptions.size(),
+                "When fulfillment center has packaging that can fit item, return a ShipmentOption with the item, "
+                        + "fulfillment center, and packaging that can fit the item.");
+    }
+
+    @Test
     public void findShipmentOptions_unknownFulfillmentCenter_throwsUnknownFulfillmentCenterException() {
         // GIVEN
         packagingDAO = new PackagingDAO(datastore);
@@ -60,8 +73,8 @@ class PackagingDAOTest {
 
         // THEN
         assertEquals(1, shipmentOptions.size(),
-            "When fulfillment center has packaging that can fit item, return a ShipmentOption with the item, "
-                + "fulfillment center, and packaging that can fit the item.");
+                "When fulfillment center has packaging that can fit item, return a ShipmentOption with the item, "
+                        + "fulfillment center, and packaging that can fit the item.");
     }
 
     @Test
@@ -74,8 +87,8 @@ class PackagingDAOTest {
 
         // THEN
         assertEquals(1, shipmentOptions.size(),
-            "When fulfillment center has packaging that can fit item, return a ShipmentOption with the item, "
-                + "fulfillment center, and packaging that can fit the item.");
+                "When fulfillment center has packaging that can fit item, return a ShipmentOption with the item, "
+                        + "fulfillment center, and packaging that can fit the item.");
     }
 
     @Test
@@ -88,8 +101,8 @@ class PackagingDAOTest {
 
         // THEN
         assertEquals(2, shipmentOptions.size(),
-            "When fulfillment center has multiple packaging that can fit item, return a ShipmentOption "
-                + "for each.");
+                "When fulfillment center has multiple packaging that can fit item, return a ShipmentOption "
+                        + "for each.");
     }
 
     private Item createItem(String length, String width, String height) {

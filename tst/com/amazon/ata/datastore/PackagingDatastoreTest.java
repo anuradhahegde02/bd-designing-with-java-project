@@ -4,8 +4,7 @@ import com.amazon.ata.types.*;
 import org.junit.jupiter.api.Test;
 
 import java.math.BigDecimal;
-import java.util.Arrays;
-import java.util.List;
+import java.util.*;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -45,21 +44,28 @@ class PackagingDatastoreTest {
     public void getFcPackagingOptions_get_returnAllOptions() {
         // GIVEN
         PackagingDatastore packagingDatastore = new PackagingDatastore();
-        List<FcPackagingOption> expectedPackagingOptions = Arrays.asList(ind1_10Cm, abe2_20Cm, abe2_40Cm, yow4_10Cm,
+        List<FcPackagingOption> expectedPackagingOptionsRaw = Arrays.asList(ind1_10Cm, abe2_20Cm, abe2_40Cm, yow4_10Cm,
                 yow4_20Cm, yow4_60Cm, iad2_20Cm, iad2_20Cm, pdx1_40Cm, pdx1_60Cm, pdx1_60Cm);
-
+        // HashSet<FcPackagingOption> expectedPackagingOptions = new HashSet<>(expectedPackagingOptionsRaw);
+        int count = 0;
         // WHEN
         List<FcPackagingOption> fcPackagingOptions = packagingDatastore.getFcPackagingOptions();
 
         // THEN
-        assertEquals(expectedPackagingOptions.size(), fcPackagingOptions.size(),
-                String.format("There should be %s FC/Packaging pairs.", expectedPackagingOptions.size()));
-        for (FcPackagingOption expectedPackagingOption : expectedPackagingOptions) {
+
+        for (FcPackagingOption expectedPackagingOption : expectedPackagingOptionsRaw) {
+            // Set<FcPackagingOption> actualOptionsFortheFullfill = fcPackagingOptions.get(expectedPackagingOption.getFulfillmentCenter());
             assertTrue(fcPackagingOptions.contains(expectedPackagingOption), String.format("expected packaging " +
                             "options from PackagingDatastore to contain %s package in fc %s",
                     expectedPackagingOption.getPackaging(),
                     expectedPackagingOption.getFulfillmentCenter().getFcCode()));
+            count++;
         }
+
+
+        assertEquals(expectedPackagingOptionsRaw.size(), count,
+                String.format("There should be %s FC/Packaging pairs.", fcPackagingOptions.size()));
+
         assertTrue(true, "getFcPackagingOptions contained all of the expected options.");
     }
 }

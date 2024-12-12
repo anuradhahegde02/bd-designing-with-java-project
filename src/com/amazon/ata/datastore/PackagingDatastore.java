@@ -3,8 +3,7 @@ package com.amazon.ata.datastore;
 import com.amazon.ata.types.*;
 
 import java.math.BigDecimal;
-import java.util.Arrays;
-import java.util.List;
+import java.util.*;
 
 /**
  * Stores all configured packaging pairs for all fulfillment centers.
@@ -23,10 +22,13 @@ public class PackagingDatastore {
             createFcPackagingOption("YOW4", Material.CORRUGATE, "60", "60", "60"),
             createFcPackagingOption("IAD2", Material.CORRUGATE, "20", "20", "20"),
             createFcPackagingOption("IAD2", Material.CORRUGATE, "20", "20", "20"),
+            createFcPackagingOption("IAD2", Material.LAMINATED_PLASTIC, "2000"),
+            createFcPackagingOption("IAD2", Material.LAMINATED_PLASTIC, "10000"),
             createFcPackagingOption("PDX1", Material.CORRUGATE, "40", "40", "40"),
             createFcPackagingOption("PDX1", Material.CORRUGATE, "60", "60", "60"),
             createFcPackagingOption("PDX1", Material.CORRUGATE, "60", "60", "60")
     );
+
 
     /**
      * Create fulfillment center packaging option from provided parameters.
@@ -37,6 +39,14 @@ public class PackagingDatastore {
 
         Packaging packaging = new Box(material, new BigDecimal(length), new BigDecimal(width),
                 new BigDecimal(height));
+        return new FcPackagingOption(fulfillmentCenter, packaging);
+    }
+
+    private FcPackagingOption createFcPackagingOption(String fcCode, Material material,
+                                                      String volume) {
+        FulfillmentCenter fulfillmentCenter = new FulfillmentCenter(fcCode);
+
+        Packaging packaging = new PolyBag(material, new BigDecimal(volume));
         return new FcPackagingOption(fulfillmentCenter, packaging);
     }
 

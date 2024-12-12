@@ -41,6 +41,7 @@ public class Box extends Packaging {
      * @return whether the item will fit in this packaging
      */
     public boolean canFitItem(Item item) {
+
         return this.length.compareTo(item.getLength()) > 0 &&
                 this.width.compareTo(item.getWidth()) > 0 &&
                 this.height.compareTo(item.getHeight()) > 0;
@@ -76,6 +77,7 @@ public class Box extends Packaging {
 
     @Override
     public boolean equals(Object o) {
+
         if (this == o) {
             return true;
         }
