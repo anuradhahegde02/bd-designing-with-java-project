@@ -1,6 +1,7 @@
 package com.amazon.ata.service;
 
 import com.amazon.ata.cost.CostStrategy;
+import com.amazon.ata.cost.WeightedCostStrategy;
 import com.amazon.ata.dao.PackagingDAO;
 import com.amazon.ata.types.FulfillmentCenter;
 import com.amazon.ata.types.Item;
@@ -25,16 +26,16 @@ public class ShipmentService {
     /**
      * A CostStrategy used to calculate the relative cost of a ShipmentOption.
      */
-    private CostStrategy costStrategy;
+   private CostStrategy costStrategy;
 
     /**
      * Instantiates a new ShipmentService object.
      * @param packagingDAO packaging data access object used to retrieve all available shipment options
-     * @param costStrategy cost strategy used to calculate the relative cost of a shipment option
+     * @param costStrategy used to calculate the relative cost of a shipment option
      */
-    public ShipmentService(PackagingDAO packagingDAO, CostStrategy costStrategy) {
+    public ShipmentService(PackagingDAO packagingDAO, WeightedCostStrategy weightedCostStrategy) {
         this.packagingDAO = packagingDAO;
-        this.costStrategy = costStrategy;
+        this.costStrategy = weightedCostStrategy;
     }
     /**
      * Finds the shipment option for the given item and fulfillment center with the lowest cost.
@@ -61,6 +62,7 @@ public class ShipmentService {
     private List<ShipmentCost> applyCostStrategy(List<ShipmentOption> results) {
         List<ShipmentCost> shipmentCosts = new ArrayList<>();
         for (ShipmentOption option : results) {
+
             shipmentCosts.add(costStrategy.getCost(option));
         }
         return shipmentCosts;

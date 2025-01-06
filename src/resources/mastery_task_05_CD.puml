@@ -1,0 +1,30 @@
+@startuml
+title  Designing a Blended Cost
+
+
+
+
+interface CostStrategy<<interface>> {
+  +getCost(ShipmentOption): ShipmentCost
+}
+class MonetaryCostStrategy {
+}
+class CarbonCostStrategy {
+}
+class WeightedCostStrategy {
+- MonetaryCostStrategy monetaryCostStrategy
+- CarbonCostStrategy carbonCostStrategy
++WeightedCostStrategy(MonetaryCostStrategy,CarbonCostStrategy)
++getCost():ShipmentCost
+}
+
+
+
+
+MonetaryCostStrategy ..|> CostStrategy
+CarbonCostStrategy ..|> CostStrategy
+WeightedCostStrategy ..|> CostStrategy
+WeightedCostStrategy *-- MonetaryCostStrategy: contains
+WeightedCostStrategy *-- CarbonCostStrategy: contains
+
+@enduml
