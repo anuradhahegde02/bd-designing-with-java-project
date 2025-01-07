@@ -3,6 +3,8 @@ package com.amazon.ata.service;
 import com.amazon.ata.cost.CostStrategy;
 import com.amazon.ata.cost.WeightedCostStrategy;
 import com.amazon.ata.dao.PackagingDAO;
+import com.amazon.ata.exceptions.NoPackagingFitsItemException;
+import com.amazon.ata.exceptions.UnknownFulfillmentCenterException;
 import com.amazon.ata.types.FulfillmentCenter;
 import com.amazon.ata.types.Item;
 import com.amazon.ata.types.ShipmentCost;
@@ -48,8 +50,24 @@ public class ShipmentService {
         try {
             List<ShipmentOption> results = this.packagingDAO.findShipmentOptions(item, fulfillmentCenter);
             return getLowestCostShipmentOption(results);
-        } catch (Exception e) {
-            return null;
+        }catch(UnknownFulfillmentCenterException e) {
+            return  ShipmentOption.builder()
+                    .withItem(item)
+                    .withPackaging(null)
+                    .withFulfillmentCenter(null)
+                    .build();
+        }catch(NoPackagingFitsItemException e) {
+            return  ShipmentOption.builder()
+                    .withItem(item)
+                    .withPackaging(null)
+                    .withFulfillmentCenter(fulfillmentCenter)
+                    .build();
+        }catch(Exception e) {
+            return  ShipmentOption.builder()
+                    .withItem(item)
+                    .withPackaging(null)
+                    .withFulfillmentCenter(null)
+                    .build();
         }
     }
 

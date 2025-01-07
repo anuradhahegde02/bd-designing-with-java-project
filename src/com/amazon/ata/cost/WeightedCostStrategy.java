@@ -8,7 +8,8 @@ import java.math.BigDecimal;
 public class WeightedCostStrategy implements CostStrategy {
     MonetaryCostStrategy monetaryStrategy;
     CarbonCostStrategy carbonStrategy;
-    ShipmentCost moneytaryPrice, carbonPrice;
+    ShipmentCost moneytaryPrice;
+    ShipmentCost carbonPrice;
 
     public WeightedCostStrategy(MonetaryCostStrategy monetaryCostStrategy, CarbonCostStrategy carbonCostStrategy) {
         monetaryStrategy = monetaryCostStrategy;
@@ -31,6 +32,6 @@ public class WeightedCostStrategy implements CostStrategy {
         carbonPrice = carbonStrategy.getCost(shipmentOption);
         BigDecimal newPrice = (moneytaryPrice.getCost().multiply(new BigDecimal(0.8))).add(carbonPrice.getCost().multiply(new BigDecimal(0.2)));
 
-        return new ShipmentCost(moneytaryPrice.getShipmentOption(),newPrice);
+        return new ShipmentCost(moneytaryPrice.getShipmentOption(), newPrice);
     }
 }
