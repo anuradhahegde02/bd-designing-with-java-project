@@ -33,7 +33,7 @@ class ShipmentServiceTest {
     private FulfillmentCenter existentFC = new FulfillmentCenter("ABE2");
     private FulfillmentCenter nonExistentFC = new FulfillmentCenter("NonExistentFC");
 
-    private ShipmentService shipmentService = new ShipmentService(new PackagingDAO(new PackagingDatastore()), new WeightedCostStrategy(new MonetaryCostStrategy(),new CarbonCostStrategy()));
+    private ShipmentService shipmentService = new ShipmentService(new PackagingDAO(new PackagingDatastore()), new WeightedCostStrategy(new MonetaryCostStrategy(), new CarbonCostStrategy()));
 
     @Test
     void findBestShipmentOption_existentFCAndItemCanFit_returnsShipmentOption() {
@@ -50,7 +50,9 @@ class ShipmentServiceTest {
         ShipmentOption shipmentOption = shipmentService.findShipmentOption(largeItem, existentFC);
 
         // THEN
-        assertNull(shipmentOption);
+
+        assertNull(shipmentOption.getPackaging(), "No packaging can fit this item");
+
     }
 
     @Test
@@ -59,7 +61,7 @@ class ShipmentServiceTest {
         ShipmentOption shipmentOption = shipmentService.findShipmentOption(smallItem, nonExistentFC);
 
         // THEN
-        assertNull(shipmentOption);
+        assertNull(shipmentOption.getFulfillmentCenter(), "Valid Item, But FC is do not exist in the system");
     }
 
     @Test
@@ -68,6 +70,6 @@ class ShipmentServiceTest {
         ShipmentOption shipmentOption = shipmentService.findShipmentOption(largeItem, nonExistentFC);
 
         // THEN
-        assertNull(shipmentOption);
+        assertNull(shipmentOption.getFulfillmentCenter(), "Item and FC do not exist in the system");
     }
 }

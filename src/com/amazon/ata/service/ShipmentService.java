@@ -28,10 +28,11 @@ public class ShipmentService {
     /**
      * A CostStrategy used to calculate the relative cost of a ShipmentOption.
      */
-   private CostStrategy costStrategy;
+    private CostStrategy costStrategy;
 
     /**
      * Instantiates a new ShipmentService object.
+     *
      * @param packagingDAO packaging data access object used to retrieve all available shipment options
      * @param costStrategy used to calculate the relative cost of a shipment option
      */
@@ -39,10 +40,11 @@ public class ShipmentService {
         this.packagingDAO = packagingDAO;
         this.costStrategy = weightedCostStrategy;
     }
+
     /**
      * Finds the shipment option for the given item and fulfillment center with the lowest cost.
      *
-     * @param item the item to package
+     * @param item              the item to package
      * @param fulfillmentCenter fulfillment center in which to look for the packaging
      * @return the lowest cost shipment option for the item and fulfillment center, or null if none found
      */
@@ -50,20 +52,20 @@ public class ShipmentService {
         try {
             List<ShipmentOption> results = this.packagingDAO.findShipmentOptions(item, fulfillmentCenter);
             return getLowestCostShipmentOption(results);
-        }catch(UnknownFulfillmentCenterException e) {
-            return  ShipmentOption.builder()
+        } catch (UnknownFulfillmentCenterException e) {
+            return ShipmentOption.builder()
                     .withItem(item)
                     .withPackaging(null)
                     .withFulfillmentCenter(null)
                     .build();
-        }catch(NoPackagingFitsItemException e) {
-            return  ShipmentOption.builder()
+        } catch (NoPackagingFitsItemException e) {
+            return ShipmentOption.builder()
                     .withItem(item)
                     .withPackaging(null)
                     .withFulfillmentCenter(fulfillmentCenter)
                     .build();
-        }catch(Exception e) {
-            return  ShipmentOption.builder()
+        } catch (Exception e) {
+            return ShipmentOption.builder()
                     .withItem(item)
                     .withPackaging(null)
                     .withFulfillmentCenter(null)
